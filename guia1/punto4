@@ -1,0 +1,391 @@
+
+
+//punto a
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Ejercicio4a {
+
+    public static void main(String[] args) throws IOException {
+        List<Integer> valores = leerValores();
+        int suma = calcularSuma(valores);
+        double media = (double) suma / valores.size();
+        mostrarResultados(valores, suma, media);
+    }
+
+    public static List<Integer> leerValores() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        List<Integer> valores = new ArrayList<>();
+        int valor;
+
+        System.out.println("Ingrese valores enteros (-99 para terminar):");
+        while (true) {
+            valor = Integer.parseInt(reader.readLine());
+            if (valor == -99) {
+                break;
+            }
+            valores.add(valor);
+        }
+
+        return valores;
+    }
+
+    public static int calcularSuma(List<Integer> valores) {
+        int suma = 0;
+        for (int valor : valores) {
+            suma += valor;
+        }
+        return suma;
+    }
+
+    public static void mostrarResultados(List<Integer> valores, int suma, double media) {
+        System.out.println("Número de valores leídos: " + valores.size());
+        System.out.println("Suma de los valores: " + suma);
+        System.out.println("Media de los valores: " + media);
+
+        System.out.println("Valores leídos:");
+        for (int valor : valores) {
+            System.out.print(valor + " ");
+        }
+        System.out.println();
+
+        int mayoresQueMedia = 0;
+        for (int valor : valores) {
+            if (valor > media) {
+                mayoresQueMedia++;
+            }
+        }
+
+        System.out.println("Número de valores mayores que la media: " + mayoresQueMedia);
+    }
+}
+
+
+//punto B
+import java.util.*;
+public class Colegio {
+    private Map<String, List<String>> alumnos;
+
+    public Colegio() {
+        this.alumnos = new HashMap<>();
+    }
+
+    public void addAlumno(String apellido, String nacionalidad) {
+        this.alumnos.computeIfAbsent(nacionalidad, k -> new ArrayList<>()).add(apellido);
+    }
+
+    public void showAll() {
+        for (Map.Entry<String, List<String>> entry : this.alumnos.entrySet()) {
+            System.out.println("Nacionalidad: " + entry.getKey() + ", Número de alumnos: " + entry.getValue().size());
+        }
+    }
+
+    public void showNacionalidad(String nacionalidad) {
+        List<String> alumnosNacionalidad = this.alumnos.get(nacionalidad);
+        if (alumnosNacionalidad != null) {
+            System.out.println("Nacionalidad: " + nacionalidad + ", Número de alumnos: " + alumnosNacionalidad.size());
+        } else {
+            System.out.println("No hay alumnos de la nacionalidad: " + nacionalidad);
+        }
+    }
+
+    public void cuantos() {
+        System.out.println("Número de nacionalidades diferentes: " + this.alumnos.size());
+    }
+
+    public void borra() {
+        this.alumnos.clear();
+        System.out.println("Todos los datos han sido eliminados.");
+    }
+
+    public static void main(String[] args) {
+        Colegio colegio = new Colegio();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("1. Añadir alumno");
+            System.out.println("2. Mostrar todas las nacionalidades y número de alumnos");
+            System.out.println("3. Mostrar número de alumnos por nacionalidad");
+            System.out.println("4. Mostrar número de nacionalidades diferentes");
+            System.out.println("5. Borrar todos los datos");
+            System.out.println("6. Salir");
+            System.out.print("Elige una opción: ");
+
+            int opcion = scanner.nextInt();
+            scanner.nextLine();  // Limpiar buffer
+
+            switch (opcion) {
+                case 1:
+                    System.out.print("Introduce el apellido del alumno: ");
+                    String apellido = scanner.nextLine();
+                    System.out.print("Introduce la nacionalidad del alumno: ");
+                    String nacionalidad = scanner.nextLine();
+                    colegio.addAlumno(apellido, nacionalidad);
+                    break;
+                case 2:
+                    colegio.showAll();
+                    break;
+                case 3:
+                    System.out.print("Introduce la nacionalidad a buscar: ");
+                    nacionalidad = scanner.nextLine();
+                    colegio.showNacionalidad(nacionalidad);
+                    break;
+                case 4:
+                    colegio.cuantos();
+                    break;
+                case 5:
+                    colegio.borra();
+                    break;
+                case 6:
+                    System.out.println("Saliendo...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Opción no válida.");
+                    break;
+            }
+        }
+    }
+}
+
+
+//punto C
+import java.util.*;
+
+public class DiasDeLaSemana {
+    public static void main(String[] args) {
+        // Crear una colección que contenga los días de la semana
+        List<String> listDias = new ArrayList<>(Arrays.asList(
+            "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"));
+
+        // Insertar en la posición 4 el elemento "Juernes"
+        listDias.add(4, "Juernes");
+
+        // Crear una copia de esa lista a otra llamada listaDos
+        List<String> listaDos = new ArrayList<>(listDias);
+
+        // Añadir a listDias el contenido de listaDos
+        listDias.addAll(listaDos);
+
+        // Mostrar el contenido de las posiciones 3 y 4 de la lista original
+        System.out.println("Posición 3: " + listDias.get(3));
+        System.out.println("Posición 4: " + listDias.get(4));
+
+        // Mostrar el primer elemento y el último de la lista original
+        System.out.println("Primer elemento: " + listDias.get(0));
+        System.out.println("Último elemento: " + listDias.get(listDias.size() - 1));
+
+        // Eliminar el elemento que contenga "Juernes" de la lista y comprobar si elimina algo o no
+        boolean eliminado = listDias.remove("Juernes");
+        System.out.println("¿Se eliminó 'Juernes'? " + (eliminado ? "Sí" : "No"));
+
+        // Mostrar uno a uno los valores de la lista original a través de un Objeto Iterador
+        Iterator<String> iterador = listDias.iterator();
+        while (iterador.hasNext()) {
+            System.out.println(iterador.next());
+        }
+
+        // Buscar si existe en la lista un elemento que se denomine "Lunes" (ignorando mayúsculas/minúsculas)
+        boolean existeLunes = listDias.stream().anyMatch(dia -> dia.equalsIgnoreCase("Lunes"));
+        System.out.println("¿Existe 'Lunes' en la lista? " + (existeLunes ? "Sí" : "No"));
+
+        // Ordenar la lista y mostrar su contenido
+        Collections.sort(listDias, String.CASE_INSENSITIVE_ORDER);
+        System.out.println("Lista ordenada:");
+        for (String dia : listDias) {
+            System.out.println(dia);
+        }
+    }
+}
+
+//punto d
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+public class JugadoresFCBarcelona {
+    public static void main(String[] args) {
+        // Crear un conjunto con los jugadores del FC Barcelona
+        Set<String> jugadores = new HashSet<>();
+        jugadores.add("Jordi Alba");
+        jugadores.add("Pique");
+        jugadores.add("Busquets");
+        jugadores.add("Iniesta");
+        jugadores.add("Messi");
+
+        // Iterar sobre los jugadores del conjunto y mostrar sus nombres
+        System.out.println("Jugadores del FC Barcelona:");
+        Iterator<String> iterator = jugadores.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+
+        // Consultar si en el conjunto existe el jugador "Neymar JR"
+        String jugadorABuscar = "Neymar JR";
+        if (jugadores.contains(jugadorABuscar)) {
+            System.out.println(jugadorABuscar + " existe en el conjunto.");
+        } else {
+            System.out.println(jugadorABuscar + " no existe en el conjunto.");
+        }
+
+        // Crear un segundo conjunto jugadores2 con los jugadores "Piqué" y "Busquets"
+        Set<String> jugadores2 = new HashSet<>();
+        jugadores2.add("Pique");
+        jugadores2.add("Busquets");
+
+        // Consultar si todos los elementos de jugadores2 existen en jugadores
+        if (jugadores.containsAll(jugadores2)) {
+            System.out.println("Todos los jugadores de jugadores2 existen en jugadores.");
+        } else {
+            System.out.println("No todos los jugadores de jugadores2 existen en jugadores.");
+        }
+
+        // Realizar una unión de los conjuntos jugadores y jugadores2
+        Set<String> unionJugadores = new HashSet<>(jugadores);
+        unionJugadores.addAll(jugadores2);
+
+        // Mostrar la unión de los conjuntos
+        System.out.println("Unión de los conjuntos jugadores y jugadores2:");
+        for (String jugador : unionJugadores) {
+            System.out.println(jugador);
+        }
+
+        // Tratar de ingresar a "Pique" a la primera colección de tal manera que la colección elegida no permita ingresarlo esta vez
+        boolean agregado = jugadores.add("Pique");
+        if (!agregado) {
+            System.out.println("Pique ya existe en el conjunto y no se agregó nuevamente.");
+        }
+    }
+}
+
+
+//punto e
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+
+public class ApuestaBolas {
+    public static void main(String[] args) {
+        Random random = new Random();
+
+        // Generar 6 números de bolas rojas del 1 al 33 sin repetir
+        Set<Integer> bolasRojas = new HashSet<>();
+        while (bolasRojas.size() < 6) {
+            int numeroRojo = random.nextInt(33) + 1;
+            bolasRojas.add(numeroRojo);
+        }
+
+        // Generar 1 número de bola azul del 1 al 16
+        int bolaAzul = random.nextInt(16) + 1;
+
+        // Mostrar los resultados
+        System.out.println("Números de bolas rojas: " + bolasRojas);
+        System.out.println("Número de bola azul: " + bolaAzul);
+    }
+}
+
+//punto f
+import java.util.*;
+
+class Estudiante implements Comparable<Estudiante> {
+    String nombre;
+    int puntaje;
+
+    public Estudiante(String nombre, int puntaje) {
+        this.nombre = nombre;
+        this.puntaje = puntaje;
+    }
+
+    @Override
+    public int compareTo(Estudiante otro) {
+        // Orden descendente por puntaje
+        return Integer.compare(otro.puntaje, this.puntaje);
+    }
+
+    @Override
+    public String toString() {
+        return nombre + ": " + puntaje;
+    }
+}
+
+class ComparadorPorNombre implements Comparator<Estudiante> {
+    @Override
+    public int compare(Estudiante e1, Estudiante e2) {
+        // Orden descendente por nombre si los puntajes son iguales
+        if (e1.puntaje == e2.puntaje) {
+            return e2.nombre.compareTo(e1.nombre);
+        }
+        return 0;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        List<Estudiante> estudiantes = new ArrayList<>();
+        estudiantes.add(new Estudiante("Juan", 85));
+        estudiantes.add(new Estudiante("Ana", 90));
+        estudiantes.add(new Estudiante("Luis", 85));
+        estudiantes.add(new Estudiante("Carlos", 75));
+
+        // Ordenar primero por Comparable (puntaje)
+        Collections.sort(estudiantes);
+
+        // Luego, ordenar por Comparator (nombre) si los puntajes son iguales
+        Collections.sort(estudiantes, new ComparadorPorNombre());
+
+        for (Estudiante estudiante : estudiantes) {
+            System.out.println(estudiante);
+        }
+    }
+}
+
+//punto g
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+public class ProvinciasCiudades {
+    public static void main(String[] args) {
+        // Crear los dos conjuntos
+        Set<String> provincias = new HashSet<>();
+        provincias.add("Provincia de Heilongjiang");
+        provincias.add("Provincia de Zhejiang");
+        provincias.add("Provincia de Jiangxi");
+        provincias.add("Provincia de Guangdong");
+        provincias.add("Provincia de Fujian");
+
+        Set<String> ciudades = new HashSet<>();
+        ciudades.add("Harbin");
+        ciudades.add("Hangzhou");
+        ciudades.add("Nanchang");
+        ciudades.add("Guangzhou");
+        ciudades.add("Fuzhou");
+
+        // Crear el mapa
+        Map<String, String> mapa = new HashMap<>();
+        int i = 0;
+        for (String provincia : provincias) {
+            String ciudad = (String) ciudades.toArray()[i];
+            mapa.put(provincia, ciudad);
+            i++;
+        }
+
+        // Mostrar los datos usando entrySet
+        System.out.println("Datos usando entrySet:");
+        for (Map.Entry<String, String> entrada : mapa.entrySet()) {
+            System.out.println(entrada.getKey() + " = " + entrada.getValue());
+        }
+
+        // Mostrar los datos usando keySet
+        System.out.println("\nDatos usando keySet:");
+        for (String clave : mapa.keySet()) {
+            System.out.println(clave + " = " + mapa.get(clave));
+        }
+    }
+}
